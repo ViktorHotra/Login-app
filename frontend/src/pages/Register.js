@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import axios from "axios";
 
 export const Register = ({inputHandler}) => {
     const [emailData, setEmailData] = useState('')
@@ -7,11 +8,21 @@ export const Register = ({inputHandler}) => {
     const [confirmData, setConfirmData] = useState('')
     const [checked, setChecked] = useState(false)
 
-
-
     return (
         <div className="form-wrapper">
-        <form action="">
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                axios.post('http://localhost:3500/api/register', {
+                    email: emailData,
+                    password: passwordData,
+                    confirm: confirmData,
+                    isSober: checked
+                })
+                    .then(response => console.log(response.data))
+                    .catch(error => console.log(error))
+            }
+
+            }>
             <legend className="fw-bold fs-4">Sign up</legend>
             <div className="input-group">
                 <label className="form-text" htmlFor="email floatingInput">Email</label>
