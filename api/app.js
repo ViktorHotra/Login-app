@@ -11,16 +11,12 @@ app.options('*', cors())
 
 // middleware
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 
 // Routes
-const registerRoutes = require('./routes/register')
-const loginRoutes = require('./routes/login')
+const registerRoutes = require('./routes/auth')
 
-const api = process.env.API_URL
-
-app.use(`${api}/register`, registerRoutes)
-app.use(`${api}/login`, loginRoutes)
+app.use(`/`, registerRoutes)
 
 mongoose.connect(process.env.CONNECTION_URL).then(() => console.log('Connected to db')).catch(err => console.log(err))
 

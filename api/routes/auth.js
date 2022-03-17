@@ -2,15 +2,20 @@ const {User} = require('../models/user')
 const express = require('express');
 const router = express.Router();
 
-router.get(`/`, (req, res) => {
+const api = process.env.API_URL
+
+router.get(`${api}/login`, (req, res) => {
     res.json(process.env.SUCCESS_RESPONSE)
 })
 
-router.post(`/`, (req, res) => {
+router.get(`${api}/register`, (req, res) => {
+    res.json(process.env.SUCCESS_RESPONSE)
+})
+
+router.post(`${api}/register`, (req, res) => {
     const user = new User({
         email: req.body.email,
         password: req.body.password,
-        confirm: req.body.confirm,
         isSober: req.body.isSober
     })
 
