@@ -9,7 +9,9 @@ import {Login, Home, NotFound, Register} from './pages'
 
 export const App = () => {
     const auth = true
-    const inputHandler = (ev, setState) => setState(ev.target.value)
+    const inputHandler = (ev, setState) => {
+        setState(ev.target.value)
+    }
 
     function RequireAuth({children}) {
         if (!auth) {
@@ -25,7 +27,7 @@ export const App = () => {
 
             <Route path="/" element={
                 <RequireAuth>
-                    <Home/>
+                    <Home inputHandler={inputHandler}/>
                 </RequireAuth>
             }/>
 

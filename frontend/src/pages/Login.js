@@ -16,6 +16,8 @@ export const Login = ({inputHandler}) => {
                 })
                     .then(response => console.log(response.data))
                     .catch(error => console.log(error))
+                setEmailData('')
+                setPasswordData('')
             }
 
             }>

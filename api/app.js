@@ -14,9 +14,11 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 // Routes
-const registerRoutes = require('./routes/auth')
+const authRoutes = require('./routes/auth')
+const tasksRoutes = require('./routes/tasks')
 
-app.use(`/`, registerRoutes)
+app.use(`/`, authRoutes)
+app.use(`/`, tasksRoutes)
 
 mongoose.connect(process.env.CONNECTION_URL).then(() => console.log('Connected to db')).catch(err => console.log(err))
 

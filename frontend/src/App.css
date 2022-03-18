@@ -62,3 +62,38 @@ legend {
     text-align: right;
 }
 
+.task-group {
+    margin-top: 20px;
+    flex-direction: row;
+}
+
+.button-task {
+    margin: 3px 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+    background-color: #ffffff;
+    /*border: 1px solid darkgray;*/
+    padding: 5px;
+}
+
+.delete-button {
+    color: red;
+    font-size: 20px;
+    line-height: 20px;
+    background-color: #e8e2e2;
+    padding: 0 6px;
+    border: none;
+    text-align: center;
+}
+
+.delete-button:hover {
+    font-weight: bold;
+    background-color: #dad4d4;
+}

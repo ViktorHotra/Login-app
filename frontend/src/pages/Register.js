@@ -18,8 +18,14 @@ export const Register = ({inputHandler}) => {
                     confirm: confirmData,
                     isSober: checked
                 })
-                    .then(response => console.log(response.data))
+                    .then(response => {
+                        console.log(response.data)
+                    })
                     .catch(error => console.log(error))
+                setEmailData('')
+                setPasswordData('')
+                setChecked(false)
+                setConfirmData('')
             }
 
             }>
