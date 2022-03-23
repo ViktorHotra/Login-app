@@ -1,8 +1,9 @@
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
+import {inputHandler} from '../utils/inputHandler'
 
-export const Login = ({inputHandler}) => {
+export const Login = () => {
     const [emailData, setEmailData] = useState('')
     const [passwordData, setPasswordData] = useState('')
 

@@ -5,16 +5,13 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
-import {Login, Home, NotFound, Register} from './pages'
+import {Login, Home, NotFound, Register, ChangePassword} from './pages'
 
 export const App = () => {
-    const auth = true
-    const inputHandler = (ev, setState) => {
-        setState(ev.target.value)
-    }
+    const auth = false
 
     function RequireAuth({children}) {
-        if (!auth) {
+        if (auth) {
             return <Navigate to="/login"/>;
         }
         return children
@@ -22,12 +19,13 @@ export const App = () => {
 
     return <>
         <Routes>
-            <Route path="/login" element={<Login inputHandler={inputHandler}/>}/>
-            <Route path="/register" element={<Register inputHandler={inputHandler}/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/change" element={<ChangePassword/>}/>
 
             <Route path="/" element={
                 <RequireAuth>
-                    <Home inputHandler={inputHandler}/>
+                    <Home/>
                 </RequireAuth>
             }/>
 
