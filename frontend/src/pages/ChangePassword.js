@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import {inputHandler} from '../utils/inputHandler'
+import axios from "axios";
 
 export const ChangePassword = () => {
     const [oldPassword, setOldPasswordData] = useState('')
@@ -9,7 +10,19 @@ export const ChangePassword = () => {
 
     return (
         <div className="form-wrapper">
-            <form>
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                axios.post('http://localhost:3500/api/change', {
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                    confirm: confirmData
+                })
+                    .then(response => console.log(response.data))
+                    .catch(error => console.log(error))
+                setOldPasswordData('')
+                setNewPasswordData('')
+                setConfirmData('')
+            }}>
                 <legend className="fw-bold fs-4">Change password</legend>
                 <div className="input-group">
                     <label className="form-text" htmlFor="oldPassword floatingInput">Old password</label>
@@ -29,9 +42,7 @@ export const ChangePassword = () => {
                            onInput={(ev) => inputHandler(ev, setConfirmData)}/>
                 </div>
 
-                <input type="submit" className="btn btn-secondary" value="Submit"/>
-                <p className="form-text">Already have an account? <Link to="/login">Sign in</Link></p>
-
+                <input type="submit" className="btn btn-secondary" value="Let's do it"/>
             </form>
         </div>
     )

@@ -26,8 +26,12 @@ export const Home = () => {
 
     return <div>
         <div>
-            <h1>My tasks</h1>
-            <div className="logout"><Link to="/login">Logout</Link></div>
+            <nav>
+            <div className="logout"><Link className="link-dark green-hover"to="/login">Logout</Link></div>
+            <div className="logout"><Link className="link-dark red-hover" to="/login">Cancel account</Link></div>
+            </nav>
+            <hr/>
+            <div className="title-homepage"><h1>My tasks</h1></div>
         </div>
         <form className="input-group mb-3 task-group" onSubmit={(event) => {
             event.preventDefault();

@@ -84,10 +84,10 @@ li {
 }
 
 .delete-button {
-    color: red;
-    font-size: 20px;
+    color: #ff0000;
+    font-size: 18px;
     line-height: 20px;
-    background-color: #e8e2e2;
+    background-color: white;
     padding: 0 6px;
     border: none;
     text-align: center;
@@ -95,5 +95,27 @@ li {
 
 .delete-button:hover {
     font-weight: bold;
-    background-color: #dad4d4;
+    font-size: 22px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.link-dark {
+    text-decoration: none;
+}
+
+.red-hover:hover {
+    color: red;
+}
+
+.green-hover:hover {
+    color: green;
+}
+
+.title-homepage {
+    margin-top: 10px;
+    text-align: center;
 }

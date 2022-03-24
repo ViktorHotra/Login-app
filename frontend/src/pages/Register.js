@@ -13,7 +13,7 @@ export const Register = () => {
 
     const [formState, setFormState] = useState(formValues)
 
-    const inputHandler2 = (ev, value) => {
+    const inputHandler = (ev, value) => {
         setFormState({...formState, ...{[value]: ev.target.value}})
     }
 
@@ -39,19 +39,19 @@ export const Register = () => {
                 <div className="input-group">
                     <label className="form-text" htmlFor="email floatingInput">Email</label>
                     <input autoComplete="off" type="text" name='email' value={formState.email}
-                           onInput={(ev) => inputHandler2(ev, 'email')}/>
+                           onInput={(ev) => inputHandler(ev, 'email')}/>
                 </div>
 
                 <div className="input-group">
                     <label className="form-text" htmlFor="password">Password</label>
                     <input autoComplete="off" type="password" name="password" value={formState.password}
-                           onInput={(ev) => inputHandler2(ev, 'password')}/>
+                           onInput={(ev) => inputHandler(ev, 'password')}/>
                 </div>
 
                 <div className="input-group">
                     <label className="form-text" htmlFor="confirmPassword">Confirm password</label>
                     <input autoComplete="off" type="password" name="confirmPassword" value={formState.confirm}
-                           onInput={(ev) => inputHandler2(ev, 'confirm')}/>
+                           onInput={(ev) => inputHandler(ev, 'confirm')}/>
                 </div>
 
                 <div className="form-check">

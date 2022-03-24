@@ -20,9 +20,11 @@ app.use(errorHandler)
 // Routes
 const authRoutes = require('./routes/auth')
 const tasksRoutes = require('./routes/tasks')
+const usersRoutes = require('./routes/users')
 
 app.use(`/`, authRoutes)
 app.use(`/`, tasksRoutes)
+app.use(`/`, usersRoutes)
 
 mongoose.connect(process.env.CONNECTION_URL).then(() => console.log('Connected to db')).catch(err => console.log(err))
 
