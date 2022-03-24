@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
 }, {versionKey: false})
 
-userSchema.virtual('id').get( function () {
+userSchema.virtual('id').get(function () {
     return this._id.toHexString()
 })
 
