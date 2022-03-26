@@ -12,3 +12,5 @@ exports.changePassword = async (req, res) => {
           res.send('Password has been changed')
      }
 }
+
+exports.deleteUser = async (req, res) => {}

@@ -3,6 +3,7 @@ import {useState} from "react";
 import axios from "axios";
 
 export const Register = () => {
+    const [isRegistered, setIsRegistered] = useState(false)
 
     const formValues = {
         email: '',
@@ -26,44 +27,48 @@ export const Register = () => {
             isSober: formState.isSober
         })
             .then(response => {
-                console.log(response.data)
+                if (response.data.success)
+                    setIsRegistered(true)
             })
             .catch(error => console.log(error))
         setFormState({...formValues})
     }
 
     return (
-        <div className="form-wrapper">
-            <form onSubmit={handleSubmit}>
-                <legend className="fw-bold fs-4">Sign up</legend>
-                <div className="input-group">
-                    <label className="form-text" htmlFor="email floatingInput">Email</label>
-                    <input autoComplete="off" type="text" name='email' value={formState.email}
-                           onInput={(ev) => inputHandler(ev, 'email')}/>
-                </div>
+        !isRegistered ?
+            <div className="form-wrapper">
+                <form onSubmit={handleSubmit}>
+                    <legend className="fw-bold fs-4">Sign up</legend>
+                    <div className="input-group">
+                        <label className="form-text" htmlFor="email floatingInput">Email</label>
+                        <input autoComplete="off" type="text" name='email' value={formState.email}
+                               onInput={(ev) => inputHandler(ev, 'email')}/>
+                    </div>
 
-                <div className="input-group">
-                    <label className="form-text" htmlFor="password">Password</label>
-                    <input autoComplete="off" type="password" name="password" value={formState.password}
-                           onInput={(ev) => inputHandler(ev, 'password')}/>
-                </div>
+                    <div className="input-group">
+                        <label className="form-text" htmlFor="password">Password</label>
+                        <input autoComplete="off" type="password" name="password" value={formState.password}
+                               onInput={(ev) => inputHandler(ev, 'password')}/>
+                    </div>
 
-                <div className="input-group">
-                    <label className="form-text" htmlFor="confirmPassword">Confirm password</label>
-                    <input autoComplete="off" type="password" name="confirmPassword" value={formState.confirm}
-                           onInput={(ev) => inputHandler(ev, 'confirm')}/>
-                </div>
+                    <div className="input-group">
+                        <label className="form-text" htmlFor="confirmPassword">Confirm password</label>
+                        <input autoComplete="off" type="password" name="confirmPassword" value={formState.confirm}
+                               onInput={(ev) => inputHandler(ev, 'confirm')}/>
+                    </div>
 
-                <div className="form-check">
-                    <input className="form-check-input" type="checkbox" name="adult" checked={formState.isSober} onChange={() => setFormState({...formState, isSober: !formState.isSober})}/>
-                    <label className="form-text checkbox-label " htmlFor="adult">I'm sober and ready to sell my soul to
-                        the devil</label>
-                </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="checkbox" name="adult" checked={formState.isSober}
+                               onChange={() => setFormState({...formState, isSober: !formState.isSober})}/>
+                        <label className="form-text checkbox-label " htmlFor="adult">I'm sober and ready to sell my soul
+                            to
+                            the devil</label>
+                    </div>
 
-                <input type="submit" className="btn btn-secondary" value="Submit"/>
-                <p className="form-text">Already have an account? <Link to="/login">Sign in</Link></p>
+                    <input type="submit" className="btn btn-secondary" value="Submit"/>
+                    <p className="form-text">Already have an account? <Link to="/login">Sign in</Link></p>
 
-            </form>
-        </div>
-    )
+                </form>
+            </div>
+            : <p>Congratulations! You've been registered. Please, <Link to="/login">sign in</Link> now.</p>)
 }

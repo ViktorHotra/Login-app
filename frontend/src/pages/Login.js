@@ -1,21 +1,30 @@
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useContext, useState} from "react";
 import axios from "axios";
 import {inputHandler} from '../utils/inputHandler'
+import {UserContext} from "../contexts/user";
 
 export const Login = () => {
     const [emailData, setEmailData] = useState('')
     const [passwordData, setPasswordData] = useState('')
 
+    const {setUser} = useContext(UserContext)
+
+    let navigate = useNavigate();
+
     return (
         <div className="form-wrapper">
             <form onSubmit={(event) => {
                 event.preventDefault();
+
                 axios.post('http://localhost:3500/api/login', {
                     email: emailData,
                     password: passwordData
                 })
-                    .then(response => console.log(response.data))
+                    .then(response => {
+                        setUser(response.data)
+                        navigate("/")
+                    })
                     .catch(error => console.log(error))
                 setEmailData('')
                 setPasswordData('')
@@ -36,7 +45,7 @@ export const Login = () => {
                 </div>
 
                 <input type="submit" className="btn btn-secondary" value="Submit"/>
-                <p className="form-text">Don't have an account? <Link to="/signup">Register now</Link></p>
+                <p className="form-text">Don't have an account? <Link to="/register">Register now</Link></p>
             </form>
         </div>
     )

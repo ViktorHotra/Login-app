@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {userLogIn, userRegister} = require("../controlers/authController");
+const {userLogIn, userRegister} = require("../controllers/authController");
 
 const api = process.env.API_URL
 

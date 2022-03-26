@@ -39,8 +39,8 @@ exports.userRegister = async (req, res) => {
             isSober: req.body.isSober
         })
         await user.save()
-        res.json(process.env.SUCCESS_RESPONSE)
+        res.status(200).json({success: true})
     } catch (e) {
-        res.json(process.env.ERR_RESPONSE)
+        res.status(200).json({success: false})
     }
 }

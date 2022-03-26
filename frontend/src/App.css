@@ -101,6 +101,7 @@ li {
 nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .link-dark {
@@ -116,6 +117,29 @@ nav {
 }
 
 .title-homepage {
-    margin-top: 10px;
+    margin-top: 30px;
     text-align: center;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.dropdown-toggle {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.menu-btn {
+    background-color: transparent;
+    border: none;
+}
+
+hr {
+    margin-top: 5px;
 }

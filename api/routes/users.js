@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {changePassword} = require("../controlers/userController");
+const {changePassword} = require("../controllers/userController");
 
 const api = process.env.API_URL;
 

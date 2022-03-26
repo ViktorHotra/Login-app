@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router()
-const {getTasksList, addTask, removeTask} = require("../controlers/taskController");
+const {getTasksList, addTask, removeTask} = require("../controllers/taskController");
 
 const api = process.env.API_URL
 

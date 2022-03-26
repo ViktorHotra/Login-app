@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './App.css';
 import {
     Routes,
@@ -6,31 +6,37 @@ import {
     Navigate,
 } from "react-router-dom";
 import {Login, Home, NotFound, Register, ChangePassword} from './pages'
+import {UserContext} from './contexts/user'
 
 export const App = () => {
-    const auth = false
+    const [user, setUser] = useState({})
 
     function RequireAuth({children}) {
-        if (auth) {
+        if (!user.token) {
             return <Navigate to="/login"/>;
         }
         return children
     }
 
     return <>
-        <Routes>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-            <Route path="/change" element={<ChangePassword/>}/>
+        <UserContext.Provider value={{user, setUser}}>
+            <Routes>
+                <Route path="/" element={
+                    <RequireAuth>
+                        <Home/>
+                    </RequireAuth>
+                }/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
 
-            <Route path="/" element={
-                <RequireAuth>
-                    <Home/>
-                </RequireAuth>
-            }/>
-
-            <Route path="*" element={<NotFound/>}/>
-        </Routes>
+                <Route path="/change" element={
+                    <RequireAuth>
+                        <ChangePassword/>
+                    </RequireAuth>
+                }/>
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
+        </UserContext.Provider>
     </>
 }
 
