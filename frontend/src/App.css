@@ -1,0 +1,145 @@
+
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    background-color: #f3eeee;
+}
+
+.form-wrapper {
+    background-color: #e1dede;
+    width: 400px;
+    padding: 20px;
+    border: 1px solid darkgray;
+    box-shadow: #aba1a1 5px 10px 10px;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    border: 1px solid darkgray;
+    outline: none;
+    padding: 5px;
+}
+
+.form-text, .checkbox-group {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 3px 0;
+}
+
+.form-check {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.checkbox-label {
+    margin-left: 10px;
+}
+
+legend {
+    text-align: center;
+    margin-bottom: 3px;
+}
+
+.logout {
+    text-align: right;
+}
+
+.task-group {
+    margin-top: 20px;
+    flex-direction: row;
+}
+
+.button-task {
+    margin: 3px 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+    background-color: #ffffff;
+    /*border: 1px solid darkgray;*/
+    padding: 5px;
+}
+
+.delete-button {
+    color: #ff0000;
+    font-size: 18px;
+    line-height: 20px;
+    background-color: white;
+    padding: 0 6px;
+    border: none;
+    text-align: center;
+}
+
+.delete-button:hover {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link-dark {
+    text-decoration: none;
+}
+
+.red-hover:hover {
+    color: red;
+}
+
+.green-hover:hover {
+    color: green;
+}
+
+.title-homepage {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.dropdown-toggle {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.menu-btn {
+    background-color: transparent;
+    border: none;
+}
+
+hr {
+    margin-top: 5px;
+}
