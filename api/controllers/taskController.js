@@ -1,27 +1,27 @@
-const {Task} = require("../models/task");
+const { Task } = require('../models/task');
 
 exports.getTasksList = async (req, res) => {
-    const tasksList = await Task.find({userId: req.user.userId})
+    const tasksList = await Task.find({ userId: req.user.userId });
 
     if (!tasksList) {
-        res.status(500).json({success: false})
+        res.status(500).json({ success: false });
     }
-    res.send(tasksList)
+    res.send(tasksList);
 };
 
 exports.addTask = async (req, res) => {
     let task = new Task({
         task: req.body.newTask,
-        userId: req.user.userId
-    })
-    task = await task.save()
+        userId: req.user.userId,
+    });
+    task = await task.save();
     if (!task) {
-        return res.status(500).send('Task cannot be saved')
+        return res.status(500).send('Task cannot be saved');
     }
-    res.send(task)
+    res.send(task);
 };
 
 exports.removeTask = async (req, res) => {
-    await Task.findByIdAndRemove(req.params.id)
-    res.json(process.env.SUCCESS_RESPONSE)
+    await Task.findByIdAndRemove(req.params.id);
+    res.json(process.env.SUCCESS_RESPONSE);
 };

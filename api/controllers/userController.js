@@ -1,16 +1,25 @@
-const {User} = require("../models/user");
+const { User } = require('../models/user');
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
 
 exports.changePassword = async (req, res) => {
-     console.log(req.body)
-     const user = await User.findOne({email: req.body.confirm})
-     if (!user) {
-          console.log('Bad user')
-     } else {
-          user.email = req.body.newPassword
-          await user.save()
-          // console.log(user)
-          res.send('Password has been changed')
-     }
-}
+    const user = await User.findOne({ _id: req.user.userId });
+    const salt = await bcrypt.genSalt(saltRounds);
+    if (!user) {
+        res.send(`User don't exist`);
+    } else {
+        user.password = await bcrypt.hash(req.body.newPassword, salt);
+        await user.save();
+        res.send('Password has been changed');
+    }
+};
 
-exports.deleteUser = async (req, res) => {}
+exports.removeUser = async (req, res) => {
+    try {
+    await User.findByIdAndRemove(req.user.userId);
+    } catch (e) {
+        console.log(e)
+    }
+    res.json(process.env.SUCCESS_RESPONSE);
+};
