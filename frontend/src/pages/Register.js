@@ -34,7 +34,7 @@ export const Register = () => {
             })
             .then((response) => {
                 if (response.data.success) {
-                    setUser(response.data.savedUser);
+                    setUser(response.data);
 
                     navigate('/');
                 }

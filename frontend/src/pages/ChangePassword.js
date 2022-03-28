@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { inputHandler } from '../utils/inputHandler';
 import { UserContext } from '../contexts/user';
 
@@ -9,6 +10,8 @@ export const ChangePassword = () => {
     const [confirmData, setConfirmData] = useState('');
 
     const { user } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     return (
         <div className="form-wrapper">
@@ -27,7 +30,7 @@ export const ChangePassword = () => {
                                 headers: { Authorization: `Bearer ${user.token}` },
                             }
                         )
-                        .then((response) => console.log(response.data))
+                        .then(() => navigate('/'))
                         .catch((error) => console.log(error));
                     setOldPasswordData('');
                     setNewPasswordData('');
@@ -74,7 +77,10 @@ export const ChangePassword = () => {
                     />
                 </div>
 
-                <input type="submit" className="btn btn-secondary" value="Let's do it" />
+                <input type="submit" className="btn btn-secondary" value="Let's do this" />
+                <p className="form-text">
+                    Or you can come back to the <Link to="/">homepage</Link>
+                </p>
             </form>
         </div>
     );

@@ -143,3 +143,10 @@ nav {
 hr {
     margin-top: 5px;
 }
+
+.message {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: red;
+
+}

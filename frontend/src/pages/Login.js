@@ -7,6 +7,7 @@ import { UserContext } from '../contexts/user';
 export const Login = () => {
     const [emailData, setEmailData] = useState('');
     const [passwordData, setPasswordData] = useState('');
+    const [msg, setMsg] = useState(null);
 
     const { setUser } = useContext(UserContext);
 
@@ -24,8 +25,13 @@ export const Login = () => {
                             password: passwordData,
                         })
                         .then((response) => {
-                            setUser(response.data);
-                            navigate('/');
+                            if (response.data.status === 200) {
+                                setUser(response.data);
+                                navigate('/');
+                            } else if (response.data.status === 400) {
+                                console.log();
+                                setMsg(response.data.message);
+                            }
                         })
                         .catch((error) => console.log(error));
                     setEmailData('');
@@ -33,6 +39,7 @@ export const Login = () => {
                 }}
             >
                 <legend className="fw-bold fs-4">Sign in</legend>
+                <p className="message">{msg}</p>
                 <div className="input-group">
                     <label className="form-text" htmlFor="email floatingInput">
                         Email

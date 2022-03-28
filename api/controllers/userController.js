@@ -1,25 +1,26 @@
-const { User } = require('../models/user');
-const bcrypt = require("bcrypt");
-
-const saltRounds = 10;
+const UserServices = require('../services/userService');
+const { Task } = require('../models/task');
 
 exports.changePassword = async (req, res) => {
-    const user = await User.findOne({ _id: req.user.userId });
-    const salt = await bcrypt.genSalt(saltRounds);
-    if (!user) {
-        res.send(`User don't exist`);
-    } else {
-        user.password = await bcrypt.hash(req.body.newPassword, salt);
-        await user.save();
-        res.send('Password has been changed');
+    const user = {
+        id: req.user.userId,
+        newPassword: req.body.newPassword,
+    };
+    try {
+        await UserServices.passwordChange(user);
+        res.status(201).json({ success: true, message: 'Password changed successfully' });
+    } catch (e) {
+        res.json({ status: 400, success: false, message: 'Error during password change' });
     }
 };
 
 exports.removeUser = async (req, res) => {
+    const id = req.user.userId;
     try {
-    await User.findByIdAndRemove(req.user.userId);
+        await UserServices.deleteUser(id);
+        await Task.deleteMany({ userId: id });
+        res.status(201).json({ success: true, message: 'User removed successfully' });
     } catch (e) {
-        console.log(e)
+        res.json({ status: 400, success: false, message: 'Error during user remove' });
     }
-    res.json(process.env.SUCCESS_RESPONSE);
 };

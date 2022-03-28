@@ -27,7 +27,8 @@ exports.createUser = async (user) => {
 exports.loginUser = async (user) => {
     try {
         const userData = await User.findOne({ email: user.email });
-        const passwordIsValid = bcrypt.compare(user.password, userData.password);
+
+        const passwordIsValid = await bcrypt.compare(user.password, userData.password);
         if (!passwordIsValid || !userData) {
             throw Error('Invalid username or password');
         }

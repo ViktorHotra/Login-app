@@ -1,27 +1,34 @@
-const { Task } = require('../models/task');
+const TaskService = require('../services/taskService');
 
 exports.getTasksList = async (req, res) => {
-    const tasksList = await Task.find({ userId: req.user.userId });
-
-    if (!tasksList) {
-        res.status(500).json({ success: false });
+    const { userId } = req.user;
+    try {
+        const tasksList = await TaskService.getUserTaskList(userId);
+        res.json({ tasksList, success: true, message: 'Task list created successfully' });
+    } catch (e) {
+        res.json({ success: false, message: 'Error while creating task list' });
     }
-    res.send(tasksList);
 };
 
 exports.addTask = async (req, res) => {
-    let task = new Task({
+    const taskData = {
         task: req.body.newTask,
         userId: req.user.userId,
-    });
-    task = await task.save();
-    if (!task) {
-        return res.status(500).send('Task cannot be saved');
+    };
+    try {
+        await TaskService.createTask(taskData);
+        res.json({ success: true, message: 'Task created successfully' });
+    } catch (e) {
+        res.json({ success: false, message: 'Task cannot be created' });
     }
-    res.send(task);
 };
 
 exports.removeTask = async (req, res) => {
-    await Task.findByIdAndRemove(req.params.id);
-    res.json(process.env.SUCCESS_RESPONSE);
+    const taskId = req.params.id;
+    try {
+        await TaskService.deleteTask(taskId);
+        res.json({ success: true, message: 'Task deleted successfully' });
+    } catch (e) {
+        res.json({ success: false, message: `Task wasn't deleted` });
+    }
 };

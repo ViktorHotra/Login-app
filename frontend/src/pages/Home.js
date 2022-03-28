@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { inputHandler } from '../utils/inputHandler';
 import { UserContext } from '../contexts/user';
@@ -10,16 +10,16 @@ export const Home = () => {
 
     const { user, setUser } = useContext(UserContext);
 
-    const getTaskList = async () => {
-        const tasks = await axios.get('http://localhost:3500/api/tasks', {
+    const getTaskList = useCallback(async () => {
+        const response = await axios.get('http://localhost:3500/api/tasks', {
             headers: { Authorization: `Bearer ${user.token}` },
         });
-        setTasksList(tasks.data);
-    };
+        setTasksList(response.data.tasksList);
+    }, [user.token]);
 
     useEffect(() => {
         getTaskList().catch((err) => console.log(err));
-    }, []);
+    }, [getTaskList]);
 
     const deleteTask = async (task) => {
         await axios.delete(`http://localhost:3500/api/tasks/${task._id}`, {
@@ -28,7 +28,7 @@ export const Home = () => {
         const tasks = await axios.get('http://localhost:3500/api/tasks', {
             headers: { Authorization: `Bearer ${user.token}` },
         });
-        setTasksList(tasks.data);
+        setTasksList(tasks.data.tasksList);
     };
 
     const removeUser = async () => {
@@ -65,7 +65,7 @@ export const Home = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link className="dropdown-item" to="#">
+                                <Link className="dropdown-item" to="#" onClick={() => setUser({})}>
                                     Logout
                                 </Link>
                             </li>
@@ -89,7 +89,9 @@ export const Home = () => {
                             },
                             { headers: { Authorization: `Bearer ${user.token}` } }
                         )
-                        .then((response) => console.log('hi'))
+                        .then((response) => {
+                            console.log(response.data.message);
+                        })
                         .catch((error) => console.log(error));
                     setNewTask('');
                     getTaskList().catch((err) => console.log(err));
