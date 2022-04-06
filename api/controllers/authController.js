@@ -26,3 +26,13 @@ exports.userRegister = async (req, res) => {
         return res.status(400).json({ status: 400, success: false, message: 'User creation was unsuccessful' });
     }
 };
+
+exports.userReload = async (req, res) => {
+    const id = req.user.userId;
+    try {
+        const reloadedUser = await AuthServices.reloadUser(id);
+        res.json({ ...reloadedUser, success: true, message: 'Reload done successfully' });
+    } catch (e) {
+        res.json({ success: false, message: 'Error while user reload' });
+    }
+};

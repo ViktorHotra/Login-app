@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const {changePassword, removeUser} = require('../controllers/userController');
+const { changePassword, removeUser } = require('../controllers/userController');
 
 const api = process.env.API_URL;
 

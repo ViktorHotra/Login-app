@@ -40,3 +40,16 @@ exports.loginUser = async (user) => {
         throw Error('Error while login user');
     }
 };
+
+exports.reloadUser = async (id) => {
+    try {
+        const userData = await User.findOne({ _id: id });
+        if (!userData) {
+            throw Error('User not found');
+        }
+        const token = await jwt.sign({ userId: id }, secret, { expiresIn: '1d' });
+        return { user: userData.email, token };
+    } catch (e) {
+        throw Error('Error while relogin user');
+    }
+};

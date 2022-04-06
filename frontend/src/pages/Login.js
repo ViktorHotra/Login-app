@@ -9,7 +9,7 @@ export const Login = () => {
     const [passwordData, setPasswordData] = useState('');
     const [msg, setMsg] = useState(null);
 
-    const { setUser } = useContext(UserContext);
+    const { setUser, onLogIn } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -26,10 +26,10 @@ export const Login = () => {
                         })
                         .then((response) => {
                             if (response.data.status === 200) {
-                                setUser(response.data);
+                                // setUser(response.data);
+                                onLogIn(response.data);
                                 navigate('/');
                             } else if (response.data.status === 400) {
-                                console.log();
                                 setMsg(response.data.message);
                             }
                         })

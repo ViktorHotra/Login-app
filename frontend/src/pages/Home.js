@@ -8,13 +8,11 @@ export const Home = () => {
     const [newTask, setNewTask] = useState('');
     const [tasksList, setTasksList] = useState([]);
 
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, onLogOut } = useContext(UserContext);
 
     const getTaskList = useCallback(async () => {
-        const response = await axios.get('http://localhost:3500/api/tasks', {
-            headers: { Authorization: `Bearer ${user.token}` },
-        });
-        setTasksList(response.data.tasksList);
+        const response = await axios.get('http://localhost:3500/api/tasks');
+        await setTasksList(response.data.tasksList);
     }, [user.token]);
 
     useEffect(() => {
@@ -22,27 +20,34 @@ export const Home = () => {
     }, [getTaskList]);
 
     const deleteTask = async (task) => {
-        await axios.delete(`http://localhost:3500/api/tasks/${task._id}`, {
-            headers: { Authorization: `Bearer ${user.token}` },
-        });
-        const tasks = await axios.get('http://localhost:3500/api/tasks', {
-            headers: { Authorization: `Bearer ${user.token}` },
-        });
+        await axios.delete(`http://localhost:3500/api/tasks/${task._id}`);
+        const tasks = await axios.get('http://localhost:3500/api/tasks');
         setTasksList(tasks.data.tasksList);
     };
 
     const removeUser = async () => {
-        await axios.delete(`http://localhost:3500/api/remove`, {
-            headers: { Authorization: `Bearer ${user.token}` },
-        });
+        await axios.delete(`http://localhost:3500/api/remove`);
         await setUser({});
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.post('http://localhost:3500/api/tasks', {
+                newTask,
+            });
+            await setNewTask('');
+            await getTaskList();
+        } catch (err) {
+            throw new Error('Task cannot be created');
+        }
     };
 
     return (
         <div>
             <div>
                 <nav className="menu">
-                    <div className="username">{user.user}</div>
+                    <div className="username">{user.user.substring(0, user.user.lastIndexOf('@'))}</div>
                     <div className="dropdown dropend">
                         <button
                             className="btn btn-secondary btn-sm dropdown-toggle menu-btn"
@@ -65,7 +70,7 @@ export const Home = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link className="dropdown-item" to="#" onClick={() => setUser({})}>
+                                <Link className="dropdown-item" to="#" onClick={() => onLogOut()}>
                                     Logout
                                 </Link>
                             </li>
@@ -77,26 +82,7 @@ export const Home = () => {
                     <h1>My tasks</h1>
                 </div>
             </div>
-            <form
-                className="input-group mb-3 task-group"
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    axios
-                        .post(
-                            'http://localhost:3500/api/tasks',
-                            {
-                                newTask,
-                            },
-                            { headers: { Authorization: `Bearer ${user.token}` } }
-                        )
-                        .then((response) => {
-                            console.log(response.data.message);
-                        })
-                        .catch((error) => console.log(error));
-                    setNewTask('');
-                    getTaskList().catch((err) => console.log(err));
-                }}
-            >
+            <form className="input-group mb-3 task-group" onSubmit={(e) => handleSubmit(e)}>
                 <input
                     value={newTask}
                     type="text"

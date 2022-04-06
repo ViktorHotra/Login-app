@@ -1,43 +1,32 @@
-import React, { useState } from 'react';
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { RequireAuth } from './components/RequireAuth/RequireAuth';
+import { Provider } from './components/Provider/Provider';
 import { Login, Home, NotFound, Register, ChangePassword } from './pages';
-import { UserContext } from './contexts/user';
 
-export const App = () => {
-    const [user, setUser] = useState({});
+export const App = () => (
+    <Provider>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <RequireAuth>
+                        <Home />
+                    </RequireAuth>
+                }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-    function RequireAuth({ children }) {
-        if (!user.token) {
-            return <Navigate to="/login" />;
-        }
-        return children;
-    }
-
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <RequireAuth>
-                            <Home />
-                        </RequireAuth>
-                    }
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-
-                <Route
-                    path="/change"
-                    element={
-                        <RequireAuth>
-                            <ChangePassword />
-                        </RequireAuth>
-                    }
-                />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </UserContext.Provider>
-    );
-};
+            <Route
+                path="/change"
+                element={
+                    <RequireAuth>
+                        <ChangePassword />
+                    </RequireAuth>
+                }
+            />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    </Provider>
+);

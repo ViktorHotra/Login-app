@@ -1,11 +1,13 @@
 const bcrypt = require('bcrypt');
 const { User } = require('../models/user');
+const { Task } = require('../models/task');
 
 const saltRounds = 10;
 
 exports.deleteUser = async (id) => {
     try {
         await User.findByIdAndRemove(id);
+        await Task.deleteMany({ userId: id });
     } catch (e) {
         throw new Error('There is no such user');
     }
