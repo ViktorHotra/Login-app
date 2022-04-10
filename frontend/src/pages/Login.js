@@ -26,7 +26,6 @@ export const Login = () => {
                         })
                         .then((response) => {
                             if (response.data.status === 200) {
-                                // setUser(response.data);
                                 onLogIn(response.data);
                                 navigate('/');
                             } else if (response.data.status === 400) {

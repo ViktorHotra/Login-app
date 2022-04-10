@@ -8,11 +8,11 @@ exports.getUserTaskList = async (userId) => {
     }
 };
 
-exports.createTask = async (taskData) => {
+exports.createTask = async ({ task, userId }) => {
     try {
         const newTask = new Task({
-            task: taskData.task,
-            userId: taskData.userId,
+            task,
+            userId,
         });
         await newTask.save();
     } catch (e) {
@@ -20,9 +20,9 @@ exports.createTask = async (taskData) => {
     }
 };
 
-exports.deleteTask = async (taskId) => {
+exports.deleteTask = async (id) => {
     try {
-        await Task.findByIdAndRemove(taskId);
+        await Task.findByIdAndRemove(id);
     } catch (e) {
         throw new Error('Error while deleting task');
     }

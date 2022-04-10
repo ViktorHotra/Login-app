@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema(
     {
@@ -17,10 +18,14 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        date: Date
+        date: Date,
     },
     { versionKey: false }
 );
+
+userSchema.methods.validatePassword = function (password) {
+    return bcrypt.compare(password, this.password);
+};
 
 userSchema.virtual('id').get(function () {
     return this._id.toHexString();

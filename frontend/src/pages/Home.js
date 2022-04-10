@@ -27,7 +27,7 @@ export const Home = () => {
 
     const removeUser = async () => {
         await axios.delete(`http://localhost:3500/api/remove`);
-        await setUser({});
+        await onLogOut();
     };
 
     const handleSubmit = async (event) => {

@@ -1,25 +1,19 @@
-const bcrypt = require('bcrypt');
 const { User } = require('../models/user');
 const { Task } = require('../models/task');
+const HashService = require('./hashService');
 
-const saltRounds = 10;
+const getById = async (id) => User.findOne({ _id: id });
 
 exports.deleteUser = async (id) => {
-    try {
-        await User.findByIdAndRemove(id);
-        await Task.deleteMany({ userId: id });
-    } catch (e) {
-        throw new Error('There is no such user');
-    }
+    await User.findByIdAndRemove(id);
+    await Task.deleteMany({ userId: id });
 };
 
-exports.passwordChange = async (user) => {
-    try {
-        const userData = await User.findOne({ _id: user.id });
-        const salt = await bcrypt.genSalt(saltRounds);
-        userData.password = await bcrypt.hash(user.newPassword, salt);
-        await userData.save();
-    } catch (e) {
-        throw new Error('Error in password change');
-    }
+exports.passwordChange = async ({ id, newPassword }) => {
+    const user = await getById(id);
+    user.password = await HashService.toHash(newPassword);
+    await user.save();
 };
+
+exports.getById = getById;
+exports.getByEmail = async (email) => User.findOne({ email });

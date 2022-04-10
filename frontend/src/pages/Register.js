@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import axios from 'axios';
-import * as yup from 'yup';
 import { UserContext } from '../contexts/user';
+import { signUpSchema } from '../validation';
 
 export const Register = () => {
     const formValues = {
@@ -18,19 +18,6 @@ export const Register = () => {
         confirm: '',
     };
 
-    const passwordSchema = yup.object().shape({
-        email: yup.string().email('Please enter a valid email address').required('Please enter your email'),
-        password: yup
-            .string()
-            .required('Please enter your password')
-            .length(3, 'Password must be at least 3 characters long'),
-        confirm: yup
-            .string()
-            .required('Please confirm your password')
-            .oneOf([yup.ref('password')], `Passwords don't match`),
-        isSober: yup.bool(),
-    });
-
     const [formState, setFormState] = useState(formValues);
     const [errorMsg, setErrorMsg] = useState(formErrorsMsg);
 
@@ -42,41 +29,41 @@ export const Register = () => {
         setFormState({ ...formState, ...{ [value]: ev.target.value } });
     };
 
-    const sendData = (data) => {
-        axios
-            .post('http://localhost:3500/api/register', data)
-            .then((response) => {
-                if (response.data.success) {
-                    onLogIn(response.data);
-
-                    navigate('/');
-                }
-            })
-            .catch((error) => console.log(error));
-        setFormState({ ...formValues });
+    const sendData = async (data) => {
+        try {
+            const response = await axios.post('http://localhost:3500/api/register', data);
+            if (!response.data.success) {
+                setErrorMsg({ ...errorMsg, email: response.data.message });
+            } else if (response.data.success) {
+                onLogIn(response.data);
+                navigate('/');
+                // return;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+        // await setFormState({ ...formValues });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        passwordSchema
-            .validate(formState, {
+        try {
+            const data = await signUpSchema.validate(formState, {
                 abortEarly: false,
-            })
-            .then((result) => {
-                sendData(result);
-            })
-            .catch((e) => {
-                if (e.name === 'ValidationError' && e.inner) {
-                    const errorsObj = e.inner.reduce(
-                        (errors, { path, message }) => ({
-                            ...errors,
-                            [path]: message,
-                        }),
-                        {}
-                    );
-                    setErrorMsg(errorsObj);
-                }
             });
+            await sendData(data);
+        } catch (e) {
+            if (e.name === 'ValidationError' && e.inner) {
+                const errorsObj = e.inner.reduce(
+                    (errors, { path, message }) => ({
+                        ...errors,
+                        [path]: message,
+                    }),
+                    {}
+                );
+                setErrorMsg(errorsObj);
+            }
+        }
     };
 
     return (

@@ -1,55 +1,32 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { User } = require('../models/user');
+const { UserService, HashService, TokenService } = require('.');
 
-const { secret } = process.env;
-
-exports.createUser = async (user) => {
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const newUser = new User({
-        email: user.email,
-        password: await bcrypt.hash(user.password, salt),
-        isSober: user.isSober,
+exports.createUser = async ({ email, password, isSober }) => {
+    if (await UserService.getByEmail(email)) {
+        return null;
+    }
+    const data = new User({
+        email,
+        password: await HashService.toHash(password),
+        isSober,
         date: new Date(),
     });
-    try {
-        const savedUser = await newUser.save();
-        const token = await jwt.sign({ userId: savedUser.id }, secret, {
-            expiresIn: '1d',
-        });
-        return { user: user.email, token };
-    } catch (e) {
-        throw Error('Error while creating user');
-    }
+    const user = await data.save();
+    const token = await TokenService.generate(user);
+    return { user: email, token };
 };
 
-exports.loginUser = async (user) => {
+exports.loginUser = async ({ email, password }) => {
     try {
-        const userData = await User.findOne({ email: user.email });
-
-        const passwordIsValid = await bcrypt.compare(user.password, userData.password);
-        if (!passwordIsValid || !userData) {
+        const user = await UserService.getByEmail(email);
+        const isValid = await user.validatePassword(password);
+        if (!isValid || !user) {
             throw Error('Invalid username or password');
+            return;
         }
-        const token = await jwt.sign({ userId: userData.id }, secret, {
-            expiresIn: '1d',
-        });
-        return { user: user.email, token };
+        const token = await TokenService.generate(user);
+        return { user: email, token };
     } catch (e) {
         throw Error('Error while login user');
-    }
-};
-
-exports.reloadUser = async (id) => {
-    try {
-        const userData = await User.findOne({ _id: id });
-        if (!userData) {
-            throw Error('User not found');
-        }
-        const token = await jwt.sign({ userId: id }, secret, { expiresIn: '1d' });
-        return { user: userData.email, token };
-    } catch (e) {
-        throw Error('Error while relogin user');
     }
 };
