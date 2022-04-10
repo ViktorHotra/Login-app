@@ -9,7 +9,7 @@ export const Login = () => {
     const [passwordData, setPasswordData] = useState('');
     const [msg, setMsg] = useState(null);
 
-    const { setUser, onLogIn } = useContext(UserContext);
+    const { onLogIn } = useContext(UserContext);
 
     const navigate = useNavigate();
 

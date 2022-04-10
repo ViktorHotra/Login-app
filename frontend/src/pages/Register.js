@@ -37,12 +37,10 @@ export const Register = () => {
             } else if (response.data.success) {
                 onLogIn(response.data);
                 navigate('/');
-                // return;
             }
         } catch (e) {
             console.log(e);
         }
-        // await setFormState({ ...formValues });
     };
 
     const handleSubmit = async (event) => {

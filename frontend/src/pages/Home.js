@@ -8,12 +8,12 @@ export const Home = () => {
     const [newTask, setNewTask] = useState('');
     const [tasksList, setTasksList] = useState([]);
 
-    const { user, setUser, onLogOut } = useContext(UserContext);
+    const { user, onLogOut } = useContext(UserContext);
 
     const getTaskList = useCallback(async () => {
         const response = await axios.get('http://localhost:3500/api/tasks');
         await setTasksList(response.data.tasksList);
-    }, [user.token]);
+    }, []);
 
     useEffect(() => {
         getTaskList().catch((err) => console.log(err));
